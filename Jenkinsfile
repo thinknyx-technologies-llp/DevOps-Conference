@@ -15,10 +15,10 @@ pipeline {
             }
         }
         
-        stage ('Compile Stage') {
+        stage ('Packaging and Distribution') {
             steps {
                 withMaven(maven : 'mvn_home') {
-                    bat 'mvn clean install'
+                    bat 'mvn clean deploy'
                 }
             }
         }
