@@ -2,8 +2,8 @@
 
 - hosts: 3.89.39.230
 
-  vars:
-    appversion: "{{ appversion }}"
+  #vars:
+   # appversion: "{{ appversion }}"
 
   tasks:
 
@@ -25,11 +25,11 @@
     #- name: Start Tomcat
       #service: name=tomcat state=started enabled=yes
 
-    #- name: deleting old war
-      #file: path=/tmp/my-webapp.war state=absent
+    - name: deleting old war
+      file: path=/tmp/thinknyxconf.war state=absent
 
     - name: Downloading Application from JFrog
-      get_url: url=https://admin.cloudrepo.io/repository/thinknyx-maven/com/thinknyx/conference/thinknyxconf/0.0.1 dest=/tmp/thinknyxconf-0.0.1.war
+      get_url: url=https://admin.cloudrepo.io/repository/thinknyx-maven/com/thinknyx/conference/thinknyxconf/0.0.1/thinknyxconf-0.0.1.war dest=/tmp/thinknyxconf.war
 
     - name: Copying war to tomcat webapps folder
-      copy: src=/tmp/thinknyxconf-0.0.1.war dest=/opt/apache-tomcat-8.5.46/webapps/thinknyxconf-0.0.1.war remote_src=yes
+      copy: src=/tmp/thinknyxconf.war dest=/opt/apache-tomcat-8.5.46/webapps/thinknyxconf.war remote_src=yes
