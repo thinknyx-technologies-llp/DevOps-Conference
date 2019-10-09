@@ -32,4 +32,4 @@
       #get_url: url=https://admin.cloudrepo.io/repository/thinknyx-maven/com/thinknyx/conference/thinknyxconf/0.0.1/thinknyxconf-0.0.1.war dest=/tmp/thinknyxconf.war
 
     - name: Copying war to tomcat webapps folder
-      copy: src="/root/.jenkins/workspace/DevOps Conference/target/thinknyxconf-0.0.1.war" dest=/opt/apache-tomcat-8.5.46/webapps/thinknyxconf.war remote_src=yes
+      copy: src="/root/.jenkins/workspace/DevOps Conference/target/devops-conference.war" dest=/opt/apache-tomcat-8.5.46/webapps/thinknyxconf.war remote_src=yes
