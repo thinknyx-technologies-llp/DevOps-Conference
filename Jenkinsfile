@@ -22,5 +22,11 @@ pipeline {
                 }
             }
         }
+        
+        stage ('Deploying Application on Test Environment') {
+            steps {
+                sh 'ansible-playbook deployment.yml'
+            }
+        }
     }
 }
