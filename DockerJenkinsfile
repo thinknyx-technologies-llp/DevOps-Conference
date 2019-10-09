@@ -4,11 +4,12 @@ pipeline {
     stages {
       stage ('Download Docker Images'){
         steps {
-          sh 'docker pull yogeshraheja/thinknyxredis:v1'
-          sh 'docker pull yogeshraheja/thinknyxdb:v1'
-          sh 'docker pull yogeshraheja/thinknyxvote:v1'
-          sh 'docker pull yogeshraheja/thinknyxresult:v1'
-          sh 'docker pull yogeshraheja/thinknyxworker:v1'
+                sh 'docker pull yogeshraheja/thinknyxredis:v1'
+                sh 'docker pull yogeshraheja/thinknyxdb:v1'
+                sh 'docker pull yogeshraheja/thinknyxvote:v1'
+                sh 'docker pull yogeshraheja/thinknyxresult:v1'
+                sh 'docker pull yogeshraheja/thinknyxworker:v1'
+            }
         }
     }
 }
