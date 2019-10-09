@@ -4,9 +4,9 @@
   <groupId>com.ubs.training</groupId>
   <artifactId>ubs-login-webapp</artifactId>
   <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>ubs-login-webapp Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <version>0.0.1</version>
+  <name>Thinknyx DevOps Conference</name>
+  <url>http://thinknyx.com/conference</url>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
