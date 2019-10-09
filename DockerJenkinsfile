@@ -11,5 +11,42 @@ pipeline {
                 sh 'docker pull yogeshraheja/thinknyxworker:v1'
             }
         }
+        
+    stage ('Creating Network'){
+        steps {
+                sh 'docker network create --subnet=192.168.10.0/24 thinknyxnet'
+            }
+        }
+        
+    stage ('Starting Voting Application'){
+        steps {
+                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+            }
+        }
+        
+    stage ('Enabling Cache'){
+        steps {
+                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+            }
+        }
+        
+    stage ('Starting Database'){
+        steps {
+                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+            }
+        }
+        
+    stage ('Starting Worker Node'){
+        steps {
+                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+            }
+        }
+        
+    stage ('Starting Display'){
+        steps {
+                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+            }
+        }
+        
     }
 }
