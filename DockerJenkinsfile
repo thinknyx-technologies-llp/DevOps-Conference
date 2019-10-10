@@ -35,8 +35,8 @@ pipeline {
         stage ('Starting Voting Application'){
             steps {
                 sh label: '', script: '''export dockerhost=`cat docker_host`
-				[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker -H tcp://$dockerhost:2375 run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'''
-            }
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker -H tcp://$dockerhost:2375 run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1
+		''' }
         }
         
         stage ('Enabling Cache'){
