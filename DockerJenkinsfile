@@ -27,22 +27,15 @@ pipeline {
         
         stage ('Creating Network'){
             steps {
-                script {
-                    // trim removes leading and trailing whitespace from the string
-                    dockerhost = readFile('docker_host').trim()
-                }
                 sh label: '', script: '''export dockerhost=`cat docker_host`
-                    [[ $(docker -H tcp://$dockerhost:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker -H tcp://${dockerhost}:2375 network create --subnet=192.168.10.0/24 thinknyxnet'
+                [[ $(docker -H tcp://$dockerhost:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker -H tcp://$dockerhost:2375 network create --subnet=192.168.10.0/24 thinknyxnet\''''
             }
         }
         
         stage ('Starting Voting Application'){
             steps {
-                script {
-                    // trim removes leading and trailing whitespace from the string
-                    dockerhost = readFile('docker_host').trim()
-                }
-                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker -H tcp://$dockerhost:2375 run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+				[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker -H tcp://$dockerhost:2375 run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'''
             }
         }
         
