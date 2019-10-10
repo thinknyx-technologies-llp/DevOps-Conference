@@ -14,37 +14,37 @@ pipeline {
         
     stage ('Creating Network'){
         steps {
-                sh '[[ $(docker network ls -f "name=thinknyxnet" --format '{{.Name}}') == "thinknyxnet" ]] || docker network create --subnet=192.168.10.0/24 thinknyxnet'
+                sh label: '', script: '[[ $(docker network ls -f "name=thinknyxnet" --format '{{.Name}}') == "thinknyxnet" ]] || docker network create --subnet=192.168.10.0/24 thinknyxnet'
             }
         }
         
     stage ('Starting Voting Application'){
         steps {
-                sh '[[ $(docker ps -f "name=voting" --format '{{.Names}}') == voting ]] || docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+                sh label: '', script: '[[ $(docker ps -f "name=voting" --format '{{.Names}}') == voting ]] || docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
             }
         }
         
     stage ('Enabling Cache'){
         steps {
-                sh '[[ $(docker ps -f "name=redis" --format '{{.Names}}') == redis ]] || docker run -itd --name=redis --net=thinknyxnet yogeshraheja/thinknyxredis:v1'
+                sh label: '', script: '[[ $(docker ps -f "name=redis" --format '{{.Names}}') == redis ]] || docker run -itd --name=redis --net=thinknyxnet yogeshraheja/thinknyxredis:v1'
             }
         }
         
     stage ('Starting Database'){
         steps {
-                sh '[[ $(docker ps -f "name=db" --format '{{.Names}}') == db ]] || docker run -itd --name=db --net=thinknyxnet yogeshraheja/thinknyxdb:v1'
+                sh label: '', script: '[[ $(docker ps -f "name=db" --format '{{.Names}}') == db ]] || docker run -itd --name=db --net=thinknyxnet yogeshraheja/thinknyxdb:v1'
             }
         }
         
     stage ('Starting Worker Node'){
         steps {
-                sh '[[ $(docker ps -f "name=worker" --format '{{.Names}}') == worker ]] || docker run -itd --name=worker --net=thinknyxnet yogeshraheja/thinknyxworker:v1'
+                sh label: '', script: '[[ $(docker ps -f "name=worker" --format '{{.Names}}') == worker ]] || docker run -itd --name=worker --net=thinknyxnet yogeshraheja/thinknyxworker:v1'
             }
         }
         
     stage ('Starting Display'){
         steps {
-                sh '[[ $(docker ps -f "name=result" --format '{{.Names}}') == result ]] || docker run -itd --name=result --net=thinknyxnet -p 82:80 yogeshraheja/thinknyxresult:v1'
+                sh label: '', script: '[[ $(docker ps -f "name=result" --format '{{.Names}}') == result ]] || docker run -itd --name=result --net=thinknyxnet -p 82:80 yogeshraheja/thinknyxresult:v1'
             }
         }
         
