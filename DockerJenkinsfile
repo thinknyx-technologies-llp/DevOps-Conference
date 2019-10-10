@@ -14,7 +14,7 @@ pipeline {
         
     stage ('Creating Network'){
         steps {
-                sh '[[ $(docker network ls -f "name=thinknyxnet" --format '{{.Name}}') == thinknyxnet ]] || docker network create --subnet=192.168.10.0/24 thinknyxnet'
+                sh '[[ ${docker network ls -f "name=thinknyxnet" --format '{{.Name}}'} == thinknyxnet ]] || docker network create --subnet=192.168.10.0/24 thinknyxnet'
             }
         }
         
