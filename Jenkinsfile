@@ -23,9 +23,14 @@ pipeline {
             }
         }
         
-        stage ('Deploying Application on Test Environment') {
+        stage ('Getting List of hosts for deployment') {
             steps {
                 copyArtifacts filter: 'hosts', projectName: 'System Provisioning', target: '.'
+            }
+        }
+        
+        stage ('Deploying Application on Test Environment') {
+            steps {
                 sh 'ansible-playbook deployment.yml -i hosts'
             }
         }
