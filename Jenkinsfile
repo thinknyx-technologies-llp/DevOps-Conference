@@ -25,6 +25,7 @@ pipeline {
         
         stage ('Deploying Application on Test Environment') {
             steps {
+                copyArtifacts filter: 'hosts', projectName: 'System Provisioning', target: '.'
                 sh 'ansible-playbook deployment.yml'
             }
         }
