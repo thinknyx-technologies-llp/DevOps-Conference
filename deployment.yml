@@ -1,6 +1,6 @@
 ---
 
-- hosts: thiknnyxconf
+- hosts: thinknyxconf
 
   #vars:
    # appversion: "{{ appversion }}"
