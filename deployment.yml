@@ -1,7 +1,9 @@
 ---
 
 - hosts: thinknyxconf
-
+  user: centos
+  become: yes
+  
   #vars:
    # appversion: "{{ appversion }}"
 
