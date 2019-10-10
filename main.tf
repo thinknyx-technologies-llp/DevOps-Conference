@@ -7,7 +7,7 @@ provider "aws" {
 resource "aws_instance" "demothinknyxconf" {
 #  ami = "ami-030ff268bd7b4e8b5"
   ami = "ami-02e8a9868af83730a"
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   key_name = "thinknyxconf"
   vpc_security_group_ids = ["sg-fd5804b1"]
 
