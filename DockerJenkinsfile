@@ -17,15 +17,13 @@ pipeline {
         stage ('Download Docker Images'){
             steps {
                 sh label: '', script: '''export dockerhost=`cat docker_host`
-docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxredis:v1
-docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'''
-                sh 'docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxredis:v1'
-                sh 'docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxdb:v1'
-                sh 'docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxvote:v1'
-                sh 'docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxresult:v1'
-                sh 'docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxworker:v1'
+                    docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxredis:v1
+                    docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxvote:v1
+                    docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxresult:v1
+                    docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxworker:v1
+                    docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'''
+                }
             }
-        }
         
         stage ('Creating Network'){
             steps {
@@ -33,7 +31,8 @@ docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'''
                     // trim removes leading and trailing whitespace from the string
                     dockerhost = readFile('docker_host').trim()
                 }
-                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker -H tcp://${dockerhost}:2375 network create --subnet=192.168.10.0/24 thinknyxnet'
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+                    [[ $(docker -H tcp://$dockerhost:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker -H tcp://${dockerhost}:2375 network create --subnet=192.168.10.0/24 thinknyxnet'
             }
         }
         
@@ -43,7 +42,7 @@ docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'''
                     // trim removes leading and trailing whitespace from the string
                     dockerhost = readFile('docker_host').trim()
                 }
-                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker -H tcp://$dockerhost:2375 run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
             }
         }
         
