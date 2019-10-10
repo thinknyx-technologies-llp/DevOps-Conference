@@ -21,6 +21,8 @@ pipeline {
                     dockerhost = readFile('docker_host').trim()
                 }
                 echo "${dockerhost}" // prints 'hotness'
+                docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxredis:v1
+                docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1
                 sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxredis:v1'
                 sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'
                 sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxvote:v1'
