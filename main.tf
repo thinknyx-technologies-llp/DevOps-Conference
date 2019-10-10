@@ -28,6 +28,18 @@ resource "aws_instance" "demothinknyxconf" {
     }
   }
 
+  provisioner "file" {
+    source      = "/root/.ssh/id_rsa.pub"
+    destination = "/home/centos/.ssh/authorized_keys"
+  }
+
+  connection {
+    user = "centos"
+    private_key = "${file("/root/.ssh/thinknyxconf.pem")}"
+    host = "${self.private_ip}"
+  }
+
+
   provisioner "local-exec" {
     command = "sudo echo '${self.public_ip}' >> ./hosts"
   }
