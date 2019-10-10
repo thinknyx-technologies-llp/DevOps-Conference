@@ -28,8 +28,8 @@ pipeline {
         stage ('Creating Network'){
             steps {
                 sh label: '', script: '''export dockerhost=`cat docker_host`
-                [[ $(docker -H tcp://$dockerhost:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker -H tcp://$dockerhost:2375 network create --subnet=192.168.10.0/24 thinknyxnet\''''
-            }
+		[[ $(docker -H tcp://${dockerhost}:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker -H tcp://${dockerhost}:2375 network create --subnet=192.168.10.0/24 thinknyxnet
+		''' }
         }
         
         stage ('Starting Voting Application'){
