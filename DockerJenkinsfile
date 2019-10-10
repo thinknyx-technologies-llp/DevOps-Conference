@@ -2,21 +2,22 @@ pipeline {
     agent any
    
     stages {
-        stage ('Download Docker Images'){
-            steps {
-                sh 'docker pull yogeshraheja/thinknyxredis:v1'
-                sh 'docker pull yogeshraheja/thinknyxdb:v1'
-                sh 'docker pull yogeshraheja/thinknyxvote:v1'
-                sh 'docker pull yogeshraheja/thinknyxresult:v1'
-                sh 'docker pull yogeshraheja/thinknyxworker:v1'
-            }
-        }
         
         stage ('Getting Docker Host Detail') {
             steps {
                 copyArtifacts filter: 'docker_host', projectName: 'System Provisioning', target: '.'
                 sh label: '', script: 'export dockerhost=`cat docker_host`'
                 sh label: '', script: 'echo "Starting container on $dockerhost"'
+            }
+        }
+        
+        stage ('Download Docker Images'){
+            steps {
+                sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxredis:v1'
+                sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'
+                sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxvote:v1'
+                sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxresult:v1'
+                sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxworker:v1'
             }
         }
         
