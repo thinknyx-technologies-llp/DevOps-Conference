@@ -1,6 +1,6 @@
 ---
 
-- hosts: 3.89.39.230
+- hosts: thiknnyxconf
 
   #vars:
    # appversion: "{{ appversion }}"
