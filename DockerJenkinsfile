@@ -41,38 +41,30 @@ pipeline {
         
         stage ('Enabling Cache'){
             steps {
-                script {
-                    // trim removes leading and trailing whitespace from the string
-                    dockerhost = readFile('docker_host').trim()
-                }
-                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=redis" --format \'{{.Names}}\') == redis ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=redis --net=thinknyxnet yogeshraheja/thinknyxredis:v1'
-            }
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=redis" --format \'{{.Names}}\') == redis ]] || docker -H tcp://$dockerhost:2375 run -itd --name=redis --net=thinknyxnet yogeshraheja/thinknyxredis:v1
+		''' }
         }
         
         stage ('Starting Database'){
             steps {
-                script {
-                    // trim removes leading and trailing whitespace from the string
-                    dockerhost = readFile('docker_host').trim()
-                }
-                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=db" --format \'{{.Names}}\') == db ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=db --net=thinknyxnet yogeshraheja/thinknyxdb:v1'
-            }
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=db" --format \'{{.Names}}\') == db ]] || docker -H tcp://$dockerhost:2375 run -itd --name=db --net=thinknyxnet yogeshraheja/thinknyxdb:v1
+		''' }
         }
         
         stage ('Starting Worker Node'){
             steps {
-                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=worker" --format \'{{.Names}}\') == worker ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=worker --net=thinknyxnet yogeshraheja/thinknyxworker:v1'
-            }
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=worker" --format \'{{.Names}}\') == worker ]] || docker -H tcp://$dockerhost:2375 run -itd --name=worker --net=thinknyxnet yogeshraheja/thinknyxworker:v1
+		''' }
         }
         
-    stage ('Starting Display'){
+    	stage ('Starting Display'){
         steps {
-                script {
-                    // trim removes leading and trailing whitespace from the string
-                    dockerhost = readFile('docker_host').trim()
-                }
-                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=result" --format \'{{.Names}}\') == result ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=result --net=thinknyxnet -p 82:80 yogeshraheja/thinknyxresult:v1'
-            }
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=result" --format \'{{.Names}}\') == result ]] || docker -H tcp://$dockerhost:2375 run -itd --name=result --net=thinknyxnet -p 82:80 yogeshraheja/thinknyxresult:v1
+		''' }
         }
     }
 }
