@@ -16,8 +16,8 @@ pipeline {
         
         stage ('Download Docker Images'){
             steps {
-                sh label: '', script: 'export dockerhost=`cat docker_host`'
-                sh label: '', script: 'echo "Starting container on $dockerhost"'
+                //sh label: '', script: 'export dockerhost=`cat docker_host`'
+                //sh label: '', script: 'echo "Starting container on $dockerhost"'
                 sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxredis:v1'
                 sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'
                 sh 'docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxvote:v1'
