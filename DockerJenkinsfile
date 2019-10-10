@@ -16,11 +16,6 @@ pipeline {
         
         stage ('Download Docker Images'){
             steps {
-                //sh label: '', script: '''dockerhost = readFile(\'docker_host\').trim()
-                    //echo "${dockerhost}" // prints \'hotness\'
-                    //docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxredis:v1
-                   // docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'''
-                    echo "${dockerhost}" // prints 'hotness'
                 sh 'docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxredis:v1'
                 sh 'docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxdb:v1'
                 sh 'docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxvote:v1'
@@ -31,37 +26,37 @@ pipeline {
         
         stage ('Creating Network'){
             steps {
-                sh label: '', script: '[[ $(docker -H tcp://$dockerhost:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker network create --subnet=192.168.10.0/24 thinknyxnet'
+                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker -H tcp://${dockerhost}:2375 network create --subnet=192.168.10.0/24 thinknyxnet'
             }
         }
         
         stage ('Starting Voting Application'){
             steps {
-                sh label: '', script: '[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
             }
         }
         
         stage ('Enabling Cache'){
             steps {
-                sh label: '', script: '[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=redis" --format \'{{.Names}}\') == redis ]] || docker run -itd --name=redis --net=thinknyxnet yogeshraheja/thinknyxredis:v1'
+                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=redis" --format \'{{.Names}}\') == redis ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=redis --net=thinknyxnet yogeshraheja/thinknyxredis:v1'
             }
         }
         
         stage ('Starting Database'){
             steps {
-                sh label: '', script: '[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=db" --format \'{{.Names}}\') == db ]] || docker run -itd --name=db --net=thinknyxnet yogeshraheja/thinknyxdb:v1'
+                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=db" --format \'{{.Names}}\') == db ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=db --net=thinknyxnet yogeshraheja/thinknyxdb:v1'
             }
         }
         
         stage ('Starting Worker Node'){
             steps {
-                sh label: '', script: '[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=worker" --format \'{{.Names}}\') == worker ]] || docker run -itd --name=worker --net=thinknyxnet yogeshraheja/thinknyxworker:v1'
+                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=worker" --format \'{{.Names}}\') == worker ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=worker --net=thinknyxnet yogeshraheja/thinknyxworker:v1'
             }
         }
         
     stage ('Starting Display'){
         steps {
-                sh label: '', script: '[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=result" --format \'{{.Names}}\') == result ]] || docker run -itd --name=result --net=thinknyxnet -p 82:80 yogeshraheja/thinknyxresult:v1'
+                sh label: '', script: '[[ $(docker -H tcp://${dockerhost}:2375 ps -f "name=result" --format \'{{.Names}}\') == result ]] || docker -H tcp://${dockerhost}:2375 run -itd --name=result --net=thinknyxnet -p 82:80 yogeshraheja/thinknyxresult:v1'
             }
         }
     }
