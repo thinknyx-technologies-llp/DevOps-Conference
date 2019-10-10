@@ -26,25 +26,25 @@ pipeline {
         
     stage ('Enabling Cache'){
         steps {
-                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+                sh 'docker run -itd --name=redis --net=thinknyxnet yogeshraheja/thinknyxredis:v1'
             }
         }
         
     stage ('Starting Database'){
         steps {
-                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+                sh 'docker run -itd --name=db --net=thinknyxnet yogeshraheja/thinknyxdb:v1'
             }
         }
         
     stage ('Starting Worker Node'){
         steps {
-                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+                sh 'docker run -itd --name=worker --net=thinknyxnet yogeshraheja/thinknyxworker:v1'
             }
         }
         
     stage ('Starting Display'){
         steps {
-                sh 'docker run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1'
+                sh 'docker run -itd --name=result --net=thinknyxnet -p 82:80 yogeshraheja/thinknyxresult:v1'
             }
         }
         
